@@ -109,7 +109,7 @@ def prep_data(my_data, options):
     element_data = pd.DataFrame(fpl_data['elements'])
     team_data = pd.DataFrame(fpl_data['teams'])
     elements_team = pd.merge(element_data, team_data, left_on='team', right_on='id')
-    review_data = pd.read_csv('../data/fplreview.csv')
+    review_data = pd.read_csv('../data/fplreviewFH27.csv')
     review_data = review_data.fillna(0)
     review_data['review_id'] = review_data.index+1
     merged_data = pd.merge(elements_team, review_data, left_on='id_x', right_on='review_id')
