@@ -12,8 +12,8 @@ if __name__=="__main__":
     with open('regular_settings.json') as f:
         options = json.load(f)
 
-    session, team_id = connect()
-    my_data = get_my_data(session, team_id)
+    #session, team_id = connect()
+    my_data = get_my_data()
     data = prep_data(my_data, options)
 
     result = solve_multi_period_fpl(data, options)
@@ -21,4 +21,5 @@ if __name__=="__main__":
     time_now = datetime.datetime.now()
     stamp = time_now.strftime("%Y-%m-%d_%H-%M-%S")
     result['picks'].to_csv(f"results/regular_{stamp}.csv")
+    print(result['total_xp'])
     
