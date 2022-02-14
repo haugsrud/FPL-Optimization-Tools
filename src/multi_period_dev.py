@@ -85,12 +85,13 @@ def connect():
         raise ValueError('Cannot read data')
     return [session, r.json()['player']['entry']]
 
-
-def get_my_data(session, team_id):
-    r = session.get(f"https://fantasy.premierleague.com/api/my-team/{team_id}/")
-    d = r.json()
-    d['team_id'] = team_id
-    return d
+def get_my_data():
+    team_id = 308158
+    base_folder = Path()
+    with open(base_folder / "../data/playerdata.json") as f:
+        r = json.load(f)
+    r['team_id'] = team_id
+    return r
 
 
 def prep_data(my_data, options):
