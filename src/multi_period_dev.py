@@ -242,6 +242,8 @@ def solve_multi_period_fpl(data, options):
     penalized_transfers = model.add_variables(gameweeks, name='pt', vartype=so.integer, lb=0)
     aux = model.add_variables(gameweeks, name='aux', vartype=so.binary)
     use_wc = model.add_variables(gameweeks, name='use_wc', vartype=so.binary)
+    ## Stephan Added
+    use_fh = {w: 0 if w != 27 else 1 for w in gameweeks}
 
     # Dictionaries
     lineup_type_count = {(t,w): so.expr_sum(lineup[p,w] for p in players if merged_data.loc[p, 'element_type'] == t) for t in element_types for w in gameweeks}
@@ -307,6 +309,10 @@ def solve_multi_period_fpl(data, options):
         for p in price_modified_players for wbar in gameweeks
     ), name='multi_sell_2')
     model.add_constraints((so.expr_sum(transfer_out_first[p,w] for w in gameweeks) <= 1 for p in price_modified_players), name='multi_sell_3')
+    
+    ## Stephan added FH27 constraints
+    model.add_constraint(free_transfers[28]==1, name='single_ft_27')
+    model.add_constraint(number_of_transfers[27]==0, name='no_tr_27')
 
     ## Transfer in/out fix
     model.add_constraints((transfer_in[p,w] + transfer_out[p,w] <= 1 for p in players for w in gameweeks), name='tr_in_out_limit')
